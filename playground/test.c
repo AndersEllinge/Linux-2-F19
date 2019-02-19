@@ -9,7 +9,7 @@
 
 static struct drm_mode_card_res res={0};
 
-static  void *fb_base[10];
+static void *fb_base[10];
 static long fb_w[10];
 static long fb_h[10];
 
@@ -57,9 +57,7 @@ void draw_circle(double cx, double cy, int radius, uint32_t pixel)
 	}
 }
 
-
-
-int main()
+void initDRM()
 {
 //------------------------------------------------------------------------------
 //Opening the DRI device
@@ -182,9 +180,56 @@ int main()
 
 	//Stop being the "master" of the DRI device
 	ioctl(dri_fd, DRM_IOCTL_DROP_MASTER, 0);
+}
 
+
+int main()
+{
+	initDRM();
+
+	int fd, bytes;
+    unsigned char data[3];
+
+    const char *pDevice = "/dev/input/mice";
+
+    // Open Mouse
+    fd = open(pDevice, O_RDWR);
+    if(fd == -1)
+    {
+        printf("ERROR Opening %s\n", pDevice);
+        return -1;
+    }
+
+    int left, middle, right;
+	int counter = 0;
+    signed char xInput, yInput;
 	int x,y;
-	for (i=0;i<100;i++)
+    while(counter < 10)
+    {
+        // Read Mouse     
+        bytes = read(fd, data, sizeof(data));
+
+        if(bytes > 0)
+        {
+            left = data[0] & 0x1;
+            right = data[0] & 0x2;
+            middle = data[0] & 0x4;
+
+            xInput = data[1];
+            yInput = data[2];
+            //printf("x=%d, y=%d, left=%d, middle=%d, right=%d\n", x, y, left, middle, right);
+			if(left == 1) {
+				counter++; 
+				printf("Counter =%d\n",counter);
+				int col=(rand()%0x00ffffff)&0x00ff00ff;
+				draw_circle(fb_w[0]/2,fb_h[0]/2,40,col);
+			}
+
+        }   
+	}
+	
+	/*
+	for (int i=0;i<100;i++)
 	{
 		//int j;
 		//for (j=0;j<res.count_connectors;j++)
@@ -192,11 +237,12 @@ int main()
 		int col=(rand()%0x00ffffff)&0x00ff00ff;
 			/*for (y=fb_h[j]/2;y<fb_h[j];y++)
 				for (x=0;x<fb_w[j];x++)
-					draw(x,y,col);*/
+					draw(x,y,col);
 		draw_circle(fb_w[0]/2,fb_h[0]/2,40,col);
 		//}
 		usleep(100000);
 	}
+	*/
 
 	return 0;
 }
