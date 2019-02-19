@@ -237,8 +237,20 @@ void *readKeyboard()
 
 
 void draw(int x, int y, int col){
-	int location=y*(fb_w[0]) + x;
-	*(((uint32_t*)fb_base[0])+location)=col;	
+	int j;
+	for (j=0;j<res.count_connectors;j++)
+	{
+		int location=y*(fb_w[0]) + x;
+		*(((uint32_t*)fb_base[0])+location)=col;	
+	}
+}
+
+void blackScreen()
+{
+	int col=0x00ffffff;
+		for (int y=fb_h[0];y<fb_h[0];y++)
+			for (int x=0;x<fb_w[0];x++)
+				draw(x,y,col);
 }
 
 //Draw a circle at (cx,cy)
@@ -418,6 +430,7 @@ int main()
 	int y = fb_h[0]/2;
 	while(1)
 	{
+		
 		if(keyboardState[LEFT].bHeld == true)
 		{
 			x--;
