@@ -25,6 +25,11 @@ static struct HWButton
 }keyboardState[5];
 
 
+static struct point2D
+{
+	int x,y;
+}point;
+
 bool isLongPressed(struct timeval *_escapeDown, struct timeval *_evtime, float time)
 {
 	//printf("Calculated time difference: %ld\n", _evtime->tv_sec - _escapeDown->tv_sec );
@@ -37,7 +42,7 @@ bool isLongPressed(struct timeval *_escapeDown, struct timeval *_evtime, float t
 void *readKeyboard()
 {
 	int fd;
-	const char *ptr = "/dev/input/event2";
+	const char *ptr = "/dev/input/event3";
 	
 	//struct HWButton keyboardState[5];
 
@@ -85,17 +90,17 @@ void *readKeyboard()
 		            keyboardState[ESC].bPressed = true;
 					keyboardState[ESC].bHeld = false;
 					keyboardState[ESC].bReleased = false;
-					printf("ESC pressed : %d\n", keyboardState[ESC].bPressed);
+					//printf("ESC pressed : %d\n", keyboardState[ESC].bPressed);
 		        }
 		        else if (ev.value == 0 && buttonTime[ESC].tv_sec)
 		        {
 					keyboardState[ESC].bPressed = false;
 					keyboardState[ESC].bHeld = false;
 					keyboardState[ESC].bReleased = true;
-		            printf("ESC released: %d\n", keyboardState[ESC].bReleased);
+		            //printf("ESC released: %d\n", keyboardState[ESC].bReleased);
            			
-					if (isLongPressed(&buttonTime[ESC], &ev.time,1))
-		                printf("Long press of ESC\n");
+					//if (isLongPressed(&buttonTime[ESC], &ev.time,1))
+		                //printf("Long press of ESC\n");
 					
 		        }
 				if (isLongPressed(&buttonTime[ESC], &ev.time, 0.5) && !keyboardState[ESC].bHeld && !keyboardState[ESC].bReleased)
@@ -103,7 +108,7 @@ void *readKeyboard()
 					keyboardState[ESC].bPressed = false;
 					keyboardState[ESC].bHeld = true;
 					keyboardState[ESC].bReleased = false;	                
-					printf("Holding of ESC\n");
+					//printf("Holding of ESC\n");
 				}
 				
 		        break;
@@ -116,17 +121,17 @@ void *readKeyboard()
 		            keyboardState[UP].bPressed = true;
 					keyboardState[UP].bHeld = false;
 					keyboardState[UP].bReleased = false;
-					printf("UP pressed : %d\n", keyboardState[UP].bPressed);
+					//printf("UP pressed : %d\n", keyboardState[UP].bPressed);
 		        }
 		        else if (ev.value == 0 && buttonTime[UP].tv_sec)
 		        {
 					keyboardState[UP].bPressed = false;
 					keyboardState[UP].bHeld = false;
 					keyboardState[UP].bReleased = true;
-		            printf("UP released: %d\n", keyboardState[UP].bReleased);
+		            //printf("UP released: %d\n", keyboardState[UP].bReleased);
            			
-					if (isLongPressed(&buttonTime[UP], &ev.time,1))
-		                printf("Long press of UP\n");
+					//if (isLongPressed(&buttonTime[UP], &ev.time,1))
+		                //printf("Long press of UP\n");
 					
 		        }
 				if (isLongPressed(&buttonTime[UP], &ev.time, 0.5) && !keyboardState[UP].bHeld && !keyboardState[UP].bReleased)
@@ -134,7 +139,7 @@ void *readKeyboard()
 					keyboardState[UP].bPressed = false;
 					keyboardState[UP].bHeld = true;
 					keyboardState[UP].bReleased = false;	                
-					printf("Holding of UP\n");
+					//printf("Holding of UP\n");
 				}
 				
 		        break;
@@ -146,17 +151,17 @@ void *readKeyboard()
 		            keyboardState[LEFT].bPressed = true;
 					keyboardState[LEFT].bHeld = false;
 					keyboardState[LEFT].bReleased = false;
-					printf("LEFT pressed : %d\n", keyboardState[LEFT].bPressed);
+					//printf("LEFT pressed : %d\n", keyboardState[LEFT].bPressed);
 		        }
 		        else if (ev.value == 0 && buttonTime[LEFT].tv_sec)
 		        {
 					keyboardState[LEFT].bPressed = false;
 					keyboardState[LEFT].bHeld = false;
 					keyboardState[LEFT].bReleased = true;
-		            printf("LEFT released: %d\n", keyboardState[LEFT].bReleased);
+		            //printf("LEFT released: %d\n", keyboardState[LEFT].bReleased);
            			
-					if (isLongPressed(&buttonTime[LEFT], &ev.time,1))
-		                printf("Long press of LEFT\n");
+					//if (isLongPressed(&buttonTime[LEFT], &ev.time,1))
+		                //printf("Long press of LEFT\n");
 					
 		        }
 				if (isLongPressed(&buttonTime[LEFT], &ev.time, 0.5) && !keyboardState[LEFT].bHeld && !keyboardState[LEFT].bReleased)
@@ -164,7 +169,7 @@ void *readKeyboard()
 					keyboardState[LEFT].bPressed = false;
 					keyboardState[LEFT].bHeld = true;
 					keyboardState[LEFT].bReleased = false;	                
-					printf("Holding of LEFT\n");
+					//printf("Holding of LEFT\n");
 				}
 				
 		        break;
@@ -176,17 +181,17 @@ void *readKeyboard()
 		            keyboardState[RIGHT].bPressed = true;
 					keyboardState[RIGHT].bHeld = false;
 					keyboardState[RIGHT].bReleased = false;
-					printf("RIGHT pressed : %d\n", keyboardState[RIGHT].bPressed);
+					//printf("RIGHT pressed : %d\n", keyboardState[RIGHT].bPressed);
 		        }
 		        else if (ev.value == 0 && buttonTime[RIGHT].tv_sec)
 		        {
 					keyboardState[RIGHT].bPressed = false;
 					keyboardState[RIGHT].bHeld = false;
 					keyboardState[RIGHT].bReleased = true;
-		            printf("RIGHT released: %d\n", keyboardState[RIGHT].bReleased);
+		            //printf("RIGHT released: %d\n", keyboardState[RIGHT].bReleased);
            			
-					if (isLongPressed(&buttonTime[RIGHT], &ev.time,1))
-		                printf("Long press of RIGHT\n");
+					//if (isLongPressed(&buttonTime[RIGHT], &ev.time,1))
+		                //printf("Long press of RIGHT\n");
 					
 		        }
 				if (isLongPressed(&buttonTime[RIGHT], &ev.time, 0.5) && !keyboardState[RIGHT].bHeld && !keyboardState[RIGHT].bReleased)
@@ -194,7 +199,7 @@ void *readKeyboard()
 					keyboardState[RIGHT].bPressed = false;
 					keyboardState[RIGHT].bHeld = true;
 					keyboardState[RIGHT].bReleased = false;	                
-					printf("Holding of RIGHT\n");
+					//printf("Holding of RIGHT\n");
 				}
 				
 		        break;
@@ -205,17 +210,17 @@ void *readKeyboard()
 		            keyboardState[DOWN].bPressed = true;
 					keyboardState[DOWN].bHeld = false;
 					keyboardState[DOWN].bReleased = false;
-					printf("DOWN pressed : %d\n", keyboardState[DOWN].bPressed);
+					//printf("DOWN pressed : %d\n", keyboardState[DOWN].bPressed);
 		        }
 		        else if (ev.value == 0 && buttonTime[DOWN].tv_sec)
 		        {
 					keyboardState[DOWN].bPressed = false;
 					keyboardState[DOWN].bHeld = false;
 					keyboardState[DOWN].bReleased = true;
-		            printf("DOWN released: %d\n", keyboardState[DOWN].bReleased);
+		            //printf("DOWN released: %d\n", keyboardState[DOWN].bReleased);
            			
-					if (isLongPressed(&buttonTime[DOWN], &ev.time,1))
-		                printf("Long press of DOWN\n");
+					//if (isLongPressed(&buttonTime[DOWN], &ev.time,1))
+		                //printf("Long press of DOWN\n");
 					
 		        }
 				if (isLongPressed(&buttonTime[DOWN], &ev.time, 0.5) && !keyboardState[DOWN].bHeld && !keyboardState[DOWN].bReleased)
@@ -223,13 +228,13 @@ void *readKeyboard()
 					keyboardState[DOWN].bPressed = false;
 					keyboardState[DOWN].bHeld = true;
 					keyboardState[DOWN].bReleased = false;	                
-					printf("Holding of DOWN\n");
+					//printf("Holding of DOWN\n");
 				}
 				
 		        break;
 		    }
 		}
-		    usleep(100);
+		    usleep(10000);
 	}
 
 	close(fd);
@@ -243,14 +248,6 @@ void draw(int x, int y, int col){
 		int location=y*(fb_w[0]) + x;
 		*(((uint32_t*)fb_base[0])+location)=col;	
 	}
-}
-
-void blackScreen()
-{
-	int col=0x00ffffff;
-		for (int y=fb_h[0];y<fb_h[0];y++)
-			for (int x=0;x<fb_w[0];x++)
-				draw(x,y,col);
 }
 
 //Draw a circle at (cx,cy)
@@ -289,6 +286,17 @@ void draw_circle(double cx, double cy, int radius, uint32_t pixel)
 			error += -x;
 		}
 	}
+}
+
+void refreshScreen()
+{
+	int x,y;
+	int col=0x00000000;
+		for (y=0;y<fb_h[0];y++)
+			for (x=0;x<fb_w[0];x++)
+				draw(x,y,col);
+	col=0x00ffffff;
+	draw_circle(point.x,point.y,40,col);
 }
 
 void initDRM()
@@ -428,38 +436,44 @@ int main()
 		printf("Thread creation failed\n");	
 	int x = fb_w[0]/2;
 	int y = fb_h[0]/2;
+
+	point.x = x;
+	point.y = y;
+	
 	while(1)
 	{
-		
 		if(keyboardState[LEFT].bHeld == true)
 		{
 			x--;
-			int col=(rand()%0x00ffffff)&0x00ff00ff;
-			draw_circle(x,y,40,col);
+			//int col=(rand()%0x00ffffff)&0x00ff00ff;
+			//draw_circle(x,y,40,col);
 		}
 		else if(keyboardState[RIGHT].bHeld == true)
 		{
 			x++;
-			int col=(rand()%0x00ffffff)&0x00ff00ff;
-			draw_circle(x,y,40,col);
+			//int col=(rand()%0x00ffffff)&0x00ff00ff;
+			//draw_circle(x,y,40,col);
 		}
 		else if(keyboardState[UP].bHeld == true)
 		{
 			y--;	
-			int col=(rand()%0x00ffffff)&0x00ff00ff;
-			draw_circle(x,y,40,col);
+			//int col=(rand()%0x00ffffff)&0x00ff00ff;
+			//draw_circle(x,y,40,col);
 		}
 		else if(keyboardState[DOWN].bHeld == true)
 		{
 			y++;
-			int col=(rand()%0x00ffffff)&0x00ff00ff;
-			draw_circle(x,y,40,col);
+			//int col=(rand()%0x00ffffff)&0x00ff00ff;
+			//draw_circle(x,y,40,col);
 		}
 		else if(keyboardState[ESC].bHeld == true)
 		{
 			break;
 		}
-		usleep(100);
+		point.x = x;
+		point.y = y;
+		refreshScreen();
+		//usleep(500);
 	};	
 
 	/*int fd, bytes;
