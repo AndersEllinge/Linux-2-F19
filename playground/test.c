@@ -65,7 +65,7 @@ void *readKeyboard()
 		return NULL;
 	}
 
-	struct timeval buttonTime[5] = { 0, 0};
+    struct timeval buttonTime[5] = {{0, 0}};
 	int code;
 	struct input_event ev;
 	while (1)
@@ -338,7 +338,7 @@ void initDRM()
 	int i;
 	for (i=0;i<res.count_connectors;i++)
 	{
-		struct drm_mode_modeinfo conn_mode_buf[20]={0};
+        struct drm_mode_modeinfo conn_mode_buf[20]={{0}};
 		uint64_t	conn_prop_buf[20]={0},
 					conn_propval_buf[20]={0},
 					conn_enc_buf[20]={0};
@@ -428,11 +428,10 @@ void initDRM()
 int main()
 {
 	initDRM();
-	
-	int thread;
-	pthread_t keyboardEventThread;
 
-	if(thread=pthread_create( &keyboardEventThread, NULL, &readKeyboard, NULL))
+    pthread_t keyboardEventThread;
+    int thread = pthread_create( &keyboardEventThread, NULL, &readKeyboard, NULL);
+    if(thread)
 		printf("Thread creation failed\n");	
 	int x = fb_w[0]/2;
 	int y = fb_h[0]/2;
