@@ -69,7 +69,7 @@ bool isLongPressed(struct timeval *_escapeDown, struct timeval *_evtime, float t
 void *readKeyboard()
 {
     int fd;
-    const char *ptr = "/dev/input/event2";
+    const char *ptr = "/dev/input/event3";
 
     //struct HWButton keyboardState[5];
 
@@ -278,34 +278,63 @@ void *readKeyboard()
 }
 */
 
+static uint8_t next_color(bool *up, uint8_t cur, unsigned int mod)
+{
+    uint8_t next;
+
+    next = cur + (*up ? 1 : -1) * (rand() % mod);
+    if ((*up && next < cur) || (!*up && next > cur)) {
+        *up = !*up;
+        next = cur;
+    }
+
+    return next;
+}
+
+static void draw2(uint8_t r, uint8_t g, uint8_t b, unsigned int x, unsigned int y)
+{
+    unsigned int off;
+    struct modeset_dev *iter;
+
+    for (iter = modeset_list; iter; iter = iter->next) {
+        off = iter->stride * y + x * 4;
+        *(uint32_t*)&iter->map[off] = (r << 16) | (g << 8) | b;
+    }
+    //usleep(100000);
+}
+
+/*
 void draw2(int x, int y, int col){
     struct modeset_dev *iter;
     unsigned int off;
-    for (iter = modeset_list; iter ; iter->next) {
-        for (int j = 0; iter->height; ++j) {
-            for (int k = 0; iter->width; ++k) {
+    printf("Starting to print\n");
+    for (iter = modeset_list; iter ; iter = iter->next) {
+        for (int j = 0; j < iter->height; ++j) {
+            for (int k = 0; k < iter->width; ++k) {
                 off = iter->stride * y + x *4;
                 *(uint32_t*)&iter->map[off] = col;
             }
         }
     }
+    printf("Printed once\n");
 }
+*/
 
 //Draw a circle at (cx,cy)
-void draw_circle(double cx, double cy, int radius, uint32_t pixel)
+void draw_circle(double cx, double cy, int radius, uint8_t r, uint8_t g, uint8_t b)
 {
-    inline void plot4points(double cx, double cy, double x, double y, uint32_t pixel)
+    inline void plot4points(double cx, double cy, double x, double y, uint8_t r, uint8_t g, uint8_t b)
     {
-        draw2(cx + x, cy + y,pixel);
-        draw2(cx - x, cy + y,pixel);
-        draw2(cx + x, cy - y,pixel);
-        draw2(cx - x, cy - y,pixel);
+        draw2(r,g,b,cx + x, cy + y);
+        draw2(r,g,b,cx - x, cy + y);
+        draw2(r,g,b,cx + x, cy - y);
+        draw2(r,g,b,cx - x, cy - y);
     }
 
-    inline void plot8points(double cx, double cy, double x, double y, uint32_t pixel)
+    inline void plot8points(double cx, double cy, double x, double y, uint8_t r, uint8_t g, uint8_t b)
     {
-        plot4points(cx, cy, x, y,pixel);
-        plot4points(cx, cy, y, x,pixel);
+        plot4points(cx, cy, x, y, r, g, b);
+        plot4points(cx, cy, y, x, r, g, b);
     }
 
     int error = -radius;
@@ -314,7 +343,7 @@ void draw_circle(double cx, double cy, int radius, uint32_t pixel)
 
     while (x >= y)
     {
-        plot8points(cx, cy, x, y, pixel);
+        plot8points(cx, cy, x, y, r, g, b);
 
         error += y;
         y++;
@@ -332,13 +361,12 @@ void draw_circle(double cx, double cy, int radius, uint32_t pixel)
 void refreshScreen()
 {
     int x,y;
-    int col=0x00000000;
-        for (y=0;y<fb_h[0];y++)
-            for (x=0;x<fb_w[0];x++)
-                draw2(x,y,col);
-    col=0x00ffffff;
-    draw_circle(point.x,point.y,40,col);
+        for (y=0;y<modeset_list->height;y++)
+            for (x=0;x<modeset_list->width;x++)
+                draw2(0x00,0x00,0x00,x,y);
+    draw_circle(point.x,point.y,40,0xff,0xff,0xff);
 }
+
 
 static int modeset_open(void){
     /* Linux Kernel detects a graphics-card on the machine with device driver ./drivers/gpu/drm/<xy>.
@@ -634,56 +662,57 @@ int main()
         }
     }
 
-    //Stop being the "master" of the DRI device
-    ioctl(dri_fd, DRM_IOCTL_DROP_MASTER, 0);
-
     pthread_t keyboardEventThread;
     int thread = pthread_create( &keyboardEventThread, NULL, &readKeyboard, NULL);
     if(thread)
         printf("Thread creation failed\n");
-    //int x = fb_w[0]/2;
-    //int y = fb_h[0]/2;
+    int x = modeset_list->width/2;
+    int y = modeset_list->height/2;
 
-    //point.x = x;
-    //point.y = y;
+    point.x = x;
+    point.y = y;
+    printf("We are starting to show stuff now\n");
+    uint8_t r, g, b;
 
     while(1)
     {
-        int col=(rand()%0x00ffffff)&0x00ff00ff;
-        draw2(0,0,col);
+        srand(time(NULL));
+        r = rand() % 0xff;
+        g = rand() % 0xff;
+        b = rand() % 0xff;
         if(keyboardState[LEFT].bHeld == true)
         {
-            //x--;
-            int col=(rand()%0x00ffffff)&0x00ff00ff;
-            draw2(0,0,col);
+            x--;
+            //draw_circle(x,y,40,r,g,b);
         }
         else if(keyboardState[RIGHT].bHeld == true)
         {
-            //x++;
-            int col=(rand()%0x00ffffff)&0x00ff00ff;
-            draw2(0,0,col);
+            x++;
+            //draw_circle(x,y,40,r,g,b);
         }
         else if(keyboardState[UP].bHeld == true)
         {
-            //y--;
-            int col=(rand()%0x00ffffff)&0x00ff00ff;
-            draw2(0,0,col);
+            y--;
+            //draw_circle(x,y,40,r,g,b);
         }
         else if(keyboardState[DOWN].bHeld == true)
         {
-            //y++;
-            int col=(rand()%0x00ffffff)&0x00ff00ff;
-            draw2(0,0,col);
+            y++;
+            //draw_circle(x,y,40,r,g,b);
         }
         else if(keyboardState[ESC].bHeld == true)
         {
             break;
         }
-        //point.x = x;
-        //point.y = y;
-        //refreshScreen();
-        usleep(5000);
+        point.x = x;
+        point.y = y;
+        refreshScreen();
+        //usleep(5000);
     };
+
+    //Stop being the "master" of the DRI device
+    ioctl(dri_fd, DRM_IOCTL_DROP_MASTER, 0);
+
 
     return 0;
 }
