@@ -1,0 +1,1 @@
+/usr/bin/g++  -pthread -O3 -DNDEBUG  -rdynamic CMakeFiles/engine1.dir/main.cpp.o CMakeFiles/engine1.dir/engine.cpp.o CMakeFiles/engine1.dir/drmImpl.c.o CMakeFiles/engine1.dir/sprite.cpp.o  -o engine1 

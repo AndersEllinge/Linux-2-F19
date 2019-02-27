@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/osboxes/Desktop/workspace/Linux-2-F19/engineDev/engine1/drmImpl.c
+drmImpl.h
+/home/osboxes/Desktop/workspace/Linux-2-F19/engineDev/engine1/drmImpl.h
+
+/home/osboxes/Desktop/workspace/Linux-2-F19/engineDev/engine1/drmImpl.h
+stdio.h
+-
+stdint.h
+-
+fcntl.h
+-
+string.h
+-
+stdlib.h
+-
+sys/mman.h
+-
+sys/ioctl.h
+-
+drm/drm.h
+-
+drm/drm_mode.h
+-
+sys/time.h
+-
+linux/input.h
+-
+errno.h
+-
+stdbool.h
+-
+pthread.h
+-
+
