@@ -266,7 +266,7 @@ static int modeset_setup_dev(int dri_fd,struct modeset_dev *dev, struct drm_mode
     dev->bufs[0].height = conn_mode_buf[0].vdisplay;
     dev->bufs[1].width = conn_mode_buf[0].hdisplay;
     dev->bufs[1].height = conn_mode_buf[0].vdisplay;
-    printf("Mode for connector %u is %ux%u\n",conn.connector_id, dev->bufs[0].width,dev->bufs[0].height);
+    printf("Mode for connector %u is %ux%u@%u\n",conn.connector_id, dev->bufs[0].width,dev->bufs[0].height,conn_mode_buf->vrefresh);
     /* Find a CRTC for this connector */
     ret = modeset_find_crtc(dri_fd, dev, conn, res,conn_enc_buf,res_crtc_buf);
     if (ret){
