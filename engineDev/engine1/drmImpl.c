@@ -456,6 +456,10 @@ extern int startGraphic(void){
             printf("Cannot set CRTC for connector %u \n",iter->conn);
         }
     }
+    printf("vrefresh: %d\n",modeset_list->mode.vrefresh);
+    printf("vdisplay: %d\n",modeset_list->mode.vdisplay);
+    printf("vsync_start: %d\n",modeset_list->mode.vsync_start);
+    printf("vsync_end: %d\n",modeset_list->mode.vsync_end);
     printf("We did it?\n");
     return dri_fd;
 }
