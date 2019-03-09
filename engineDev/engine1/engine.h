@@ -34,6 +34,7 @@ public:
        uint32_t nScreenHeight;
 
 private:
+       int ret;
        static std::atomic<bool> active;
 
        void EngineThread();

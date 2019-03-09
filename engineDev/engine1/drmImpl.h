@@ -48,13 +48,14 @@ static struct point2D
     int x,y;
 }point;
 
-static int modeset_open(void);
+static int modeset_open(int *out, const char *node);
 static int modeset_prepare(int dri_fd);
 static int modeset_create_fb(int dri_fd, struct modeset_buf *buf);
 static int modeset_setup_dev(int dri_fd, struct modeset_dev *dev, struct drm_mode_get_connector conn, struct drm_mode_card_res res, struct drm_mode_modeinfo *conn_mode_buf, uint64_t *conn_enc_buf, uint64_t *res_crtc_buf);
 static int modeset_find_crtc(int dri_fd, struct modeset_dev *dev, struct drm_mode_get_connector conn, struct drm_mode_card_res res, uint64_t *conn_enc_buf, uint64_t *res_crtc_buf);
 
 extern uint8_t next_color(bool *up, uint8_t cur, unsigned int mod);
+extern void modeset_cleanup(int dri_fd);
 extern int startGraphic(void);
 extern void writeToBuf(int x, int y, uint8_t r, uint8_t g, uint8_t b);
 extern void refresh(int dri_fd);

@@ -5,7 +5,6 @@ extern "C" {
 }
 
 
-
 Engine::Engine(){};
 
 void Engine::Construct(uint32_t screen_w, uint32_t screen_h)
@@ -168,12 +167,12 @@ void Engine::DrawSprite(int32_t x, int32_t y, Sprite *sprite, uint32_t scale)
 
 void Engine::EngineThread()
 {
-    int ret;
 
     ret = startGraphic();
-    if(ret == 0)
+    if(ret == 0) {
         std::cout << "Something went wrong" << std::endl;
-
+        exit(0);
+    }
     uint8_t r, g, b;
     bool r_up, g_up, b_up;
     srand(time(NULL));
