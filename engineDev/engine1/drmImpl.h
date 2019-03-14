@@ -48,6 +48,8 @@ static struct point2D
     int x,y;
 }point;
 
+static bool allMonitors = false;
+
 static int modeset_open(int *out, const char *node);
 static int modeset_prepare(int dri_fd);
 static int modeset_create_fb(int dri_fd, struct modeset_buf *buf);
@@ -56,7 +58,7 @@ static int modeset_find_crtc(int dri_fd, struct modeset_dev *dev, struct drm_mod
 
 extern uint8_t next_color(bool *up, uint8_t cur, unsigned int mod);
 extern void modeset_cleanup(int dri_fd);
-extern int startGraphic(void);
+extern int startGraphic(bool useAllMonitors);
 extern void writeToBuf(int x, int y, uint8_t r, uint8_t g, uint8_t b);
 extern void refresh(int dri_fd);
 extern void refreshScreenCircle(int dri_fd,uint8_t r, uint8_t g,uint8_t b);

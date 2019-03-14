@@ -261,6 +261,8 @@ static int modeset_prepare(int dri_fd){
         }
         dev->next = modeset_list;
         modeset_list = dev;
+        if(!allMonitors)
+            break;
     }
 
     printf("Complete modeset_prepare\n");
@@ -498,14 +500,14 @@ extern void modeset_cleanup(int dri_fd){
     close(dri_fd);
 }
 
-extern int startGraphic(void){
+extern int startGraphic(bool useAllMonitors){
     int ret, dri_fd;
     const char *card;
     struct modeset_dev *iter;
     struct modeset_buf *buf;
     struct drm_mode_crtc crtc={0};
     ret = modeset_open(&dri_fd,card);
-
+    allMonitors = useAllMonitors;
     if(ret){
         printf("Failed to open graphics card: Exiting\n");
         return 0;
@@ -533,6 +535,7 @@ extern int startGraphic(void){
         ret = ioctl(dri_fd, DRM_IOCTL_MODE_SETCRTC, &crtc);
         if (ret){
             printf("Cannot set CRTC for connector %u \n",iter->conn);
+            return 0;
         }
     }
     //printf("Completed crtc setup\n");
