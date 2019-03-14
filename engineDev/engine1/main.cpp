@@ -180,7 +180,7 @@ public:
                 float dp = normal.x * light_direction.x + normal.y * light_direction.y + normal.z * light_direction.z;
 
                 // Choose color
-                triTranslated.rgb = Pixel(0,(int)(192*dp),(int)(192*dp));
+                triTranslated.rgb = Pixel(0,(int)(192.f*dp),(int)(192.f*dp));
                 //triTranslated.rgb = Pixel((int)rand()%255,(int)(rand()%255*dp),(int)(rand()%255*dp));
 
                 // Project triangles from 3D --> 2D
