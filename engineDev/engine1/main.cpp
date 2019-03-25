@@ -177,7 +177,7 @@ public:
                 light_direction.x /= l; light_direction.y /= l; light_direction.z /= l;
 
                 // How similar is normal to light direction
-                float dp = normal.x * light_direction.x + normal.y * light_direction.y + normal.z * light_direction.z;
+                float dp = max(0.1f,normal.x * light_direction.x + normal.y * light_direction.y + normal.z * light_direction.z);
 
                 // Choose color
                 triTranslated.rgb = Pixel(0,(int)(192.f*dp),(int)(192.f*dp));
@@ -221,6 +221,10 @@ public:
                 triProjected.p[1].x, triProjected.p[1].y,
                 triProjected.p[2].x, triProjected.p[2].y,
                 triProjected.rgb);
+            DrawTriangle(triProjected.p[0].x, triProjected.p[0].y,
+                triProjected.p[1].x, triProjected.p[1].y,
+                triProjected.p[2].x, triProjected.p[2].y,
+                WHITE);
         }
 
 
